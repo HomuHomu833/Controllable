@@ -10,6 +10,7 @@ import net.minecraft.client.gui.components.tabs.TabNavigationBar;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +28,12 @@ public class TabNavigationOverlay implements IOverlay
         Screen screen = mc.screen;
         if(screen != null)
         {
-            this.navigationBar = screen.children().stream().filter(e -> e instanceof TabNavigationBar).map(listener -> (TabNavigationBar) listener).findFirst().orElse(null);
+            List<? extends GuiEventListener> children = new ArrayList<>(screen.children());
+            this.navigationBar = children.stream()
+                    .filter(e -> e instanceof TabNavigationBar)
+                    .map(listener -> (TabNavigationBar) listener)
+                    .findFirst()
+                    .orElse(null);
         }
     }
 
@@ -40,7 +46,11 @@ public class TabNavigationOverlay implements IOverlay
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
-        List<? extends GuiEventListener> tabs = this.navigationBar.children();
+        if (this.navigationBar == null) return;
+        
+        List<? extends GuiEventListener> tabs = new ArrayList<>(this.navigationBar.children());
+        if (tabs.isEmpty()) return;
+        
         ScreenRectangle firstTab = tabs.get(0).getRectangle();
         ClientHelper.drawButton(graphics, firstTab.left() - 18, (firstTab.height() - 11) / 2, Buttons.LEFT_BUMPER);
         ScreenRectangle lastTab = tabs.get(tabs.size() - 1).getRectangle();
