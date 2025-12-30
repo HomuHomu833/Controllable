@@ -70,11 +70,6 @@ jobs:
         GPR_USER: "MrCrayfish"
         GPR_KEY: ${{ secrets.GPR_TOKEN }}
       run: ./gradlew :forge:build
-    - name: Build (Fabric)
-      env:
-        GPR_USER: "MrCrayfish"
-        GPR_KEY: ${{ secrets.GPR_TOKEN }}
-      run: ./gradlew :fabric:build
     - name: Publish to GitHub Packages
       env:
         GPR_USER: "MrCrayfish"
