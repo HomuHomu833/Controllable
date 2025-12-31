@@ -62,12 +62,6 @@ jobs:
       run: |
         echo "forge=forge/build/libs/${{ steps.mod_id.outputs.value }}-forge-${{ steps.mc_version.outputs.value }}-${{ steps.mod_version.outputs.value }}-release.jar" >> "$GITHUB_OUTPUT"
         echo "fabric=fabric/build/libs/${{ steps.mod_id.outputs.value }}-fabric-${{ steps.mc_version.outputs.value }}-${{ steps.mod_version.outputs.value }}-release.jar" >> "$GITHUB_OUTPUT"
-    - name: Create Release
-      uses: ncipollo/release-action@v1
-      with:
-        name: '${{ steps.mc_version.outputs.value }}-${{ steps.mod_version.outputs.value }}'
-        artifacts: "${{ steps.artifacts.outputs.forge }},${{ steps.artifacts.outputs.forge }}.asc,${{ steps.artifacts.outputs.fabric }},${{ steps.artifacts.outputs.fabric }}.asc,CHANGELOG.txt"
-        bodyFile: "RELEASE_BODY.md"
     - name: Upload Forge Artifacts
       uses: actions/upload-artifact@v4
       with:
